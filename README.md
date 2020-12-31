@@ -1,6 +1,7 @@
 # Linked-list
 
 - Create(int A[], int n)
+- create_2(int B[], int n)
 - Display(struct Node *p)
 - RDisplay(struct Node *p)
 - Count_Node(struct Node *p)
