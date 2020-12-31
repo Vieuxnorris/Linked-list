@@ -18,3 +18,6 @@
 - Reversing_Node_V1(struct Node *p)
 - Reversing_Node_V2(struct Node *p)
 - Reversing_Node_V3(struct Node *q, struct Node *p)
+- Merge(struct Node *p)
+- Merge_sorted_Link(struct Node *p, struct Node *q)
+- IsLoop(struct Node *p)
