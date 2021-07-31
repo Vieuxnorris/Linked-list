@@ -29,8 +29,9 @@
 
 # Double-Linked-list
 
-- create(int A[], int n)
+- Create(int A[], int n)
 - Delete(struct Node *p, int index)
 - Insert(struct Node *p, int index, int x)
+- Reverse(struct Node *p)
 - Display(struct Node *p)
 - Length(struct Node *p)
