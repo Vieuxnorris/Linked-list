@@ -7,6 +7,26 @@ struct Node
         struct Node *Next;
 }*first=NULL, *second=NULL, *last=NULL, *last_second=NULL, *third=NULL;
 
+void create_circular(int A[], int n)
+{
+        int i;
+        struct Node *t;
+        first = (struct Node *)malloc(sizeof(struct Node));
+        first->Data = A[0];
+        first->Next = first;
+        last = first;
+
+        for(i=1;i<n;i++)
+        {
+                t=(struct Node *)malloc(sizeof(struct Node));
+                t->Data = A[i];
+                t->Next = last->Next;
+                last->Next = t;
+                last = t;
+        }
+}
+
+
 void create(int A[], int n)
 {
         int i;
@@ -45,6 +65,39 @@ void create_2(int B[], int n)
                 last_second->Next = t;
                 last_second = t;
         }
+}
+
+void Display_circulaire(struct Node *h)
+{
+        do
+        {
+                printf("%d ", h->Data);
+                h = h->Next;
+        } while (h != first);
+        printf("\n");        
+}
+
+void RDisplay_circulaire(struct Node *h)
+{
+        static int flag = 0;
+        if (h != first || flag == 0)
+        {
+                flag = 1;
+                printf("%d ", h->Data);
+                RDisplay_circulaire(h->Next);
+        }
+        flag = 0;
+}
+
+int length_circulaire(struct Node *p)
+{
+        int len=0;
+        do
+        {
+                len++;
+                p = p->Next;
+        } while (p!=first);
+        return len;
 }
 
 void Display(struct Node *p)
@@ -139,6 +192,75 @@ int Improve_Search_Node(struct Node *p, int key)
                 p = p->Next;
         }
         return 0;
+}
+
+void Insert_Node_Circulaire(struct Node *p, int index, int x)
+{
+        struct Node *t;
+        int i;
+        if (index < 0 || index > length_circulaire(p))
+                return;
+        
+        if(index == 0)
+        {
+                t = (struct Node *)malloc(sizeof(struct Node));
+                t->Data = x;
+                if(first == NULL)
+                {
+                        first = t;
+                        first->Next = first;
+                }
+                else
+                {
+                        while (p->Next != first) p = p->Next;
+                        p->Next = t;
+                        t->Next = first;
+                        first = t;
+                }
+        }
+        else
+        {
+                for (i=0;i<index-1;i++) p = p->Next;
+                t = (struct Node *)malloc(sizeof(struct Node));
+                t->Data = x;
+                t->Next = p->Next;
+                p->Next = t;
+        }
+}
+
+int Delete_circulaire(struct Node *p, int index)
+{
+        struct Node *q;
+        int i,x;
+
+        if (index < 0 || index > length_circulaire(first))
+                return -1;
+        if (index == 1)
+        {
+                while(p->Next != first) p=p->Next;
+                x = first->Data;
+                if (first == p)
+                {
+                        free(first);
+                        first = NULL;
+                }
+                else
+                {
+                        p->Next = first->Next;
+                        free(first);
+                        first = p->Next;
+                }
+        }
+        else
+        {
+                for (i=0;i<index-2;i++)
+                        p = p->Next;
+                q = p->Next;
+                p->Next = q->Next;
+                x = q->Data;
+                free(q);
+        }
+        return x;
 }
 
 void Insert_Node(struct Node *p, int index,int value)
@@ -384,17 +506,19 @@ int IsLoop(struct Node *p)
 
 int main()
 {
-        int A[] = {10,20,40,50,60};
+        int A[] = {2,3,4,5,6};
         int B[] = {1,15,2,3,25,40};
-        create(A,5);
-        create_2(B,5);
+        create_circular(A, 5);
+        RDisplay_circulaire(first);
+        //create(A,5);
+        //create_2(B,5);
 
         //Insert_Node(first,4,100);
         //Insert_Sorted_List(first, 100);
         //printf("Sorted ?  %d\n",Link_Sorted(first));
         //Merge_sorted_Link(first, second);
-        printf("Loop ? %d\n", IsLoop(first));
-        Display(first);
+        //printf("Loop ? %d\n", IsLoop(first));
+        //Display(first);
         //Display(last);
         return 0;
 }
