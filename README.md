@@ -31,5 +31,5 @@
 
 - create(int A[], int n)
 - Insert(struct Node *p, int index, int x)
-- Diplay(struct Node *p)
+- Display(struct Node *p)
 - Length(struct Node *p)
