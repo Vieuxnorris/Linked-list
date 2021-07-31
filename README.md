@@ -28,3 +28,8 @@
 - IsLoop(struct Node *p)
 
 # Double-Linked-list
+
+- create(int A[], int n)
+- Insert(struct Node *p, int index, int x)
+- Diplay(struct Node *p)
+- Length(struct Node *p)
