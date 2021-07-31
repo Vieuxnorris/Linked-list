@@ -26,3 +26,5 @@
 - Merge(struct Node *p)
 - Merge_sorted_Link(struct Node *p, struct Node *q)
 - IsLoop(struct Node *p)
+
+# Double-Linked-list
