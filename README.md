@@ -1,7 +1,11 @@
 # Linked-list
 
+- create_circular(int A[], int n)
 - Create(int A[], int n)
 - create_2(int B[], int n)
+- Display_circulaire(struct Node *h)
+- RDisplay_circulaire(struct Node *h)
+- length_circulaire(struct Node *p)
 - Display(struct Node *p)
 - RDisplay(struct Node *p)
 - Count_Node(struct Node *p)
