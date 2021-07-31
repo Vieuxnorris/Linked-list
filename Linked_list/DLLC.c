@@ -8,7 +8,7 @@ struct Node
     struct Node *Next;
 }*first=NULL;
 
-void create(int A[], int n)
+void Create(int A[], int n)
 {
     struct Node *t, *last;
     int i;
@@ -88,6 +88,21 @@ void Insert(struct Node *p, int index, int x)
     }
 }
 
+void Reverse(struct Node *p)
+{
+    struct Node *temp;
+
+    while(p != NULL)
+    {
+        temp = p->Next;
+        p->Next = p->prev;
+        p->prev = temp;
+        p = p->prev;
+        if(p != NULL && p->Next == NULL)
+            first = p;
+    }
+}
+
 void Display(struct Node *p)
 {
     while(p != NULL)
@@ -112,8 +127,8 @@ int Length(struct Node *p)
 int main()
 {
     int A[]={10,20,30,40,50};
-    create(A,5);
-    Delete(first,1);
+    Create(A,5);
+    Reverse(first);
     printf("\nLength is : %d\n", Length(first));
     Display(first);
 
