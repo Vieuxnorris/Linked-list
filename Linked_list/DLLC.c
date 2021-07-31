@@ -59,7 +59,7 @@ void Insert(struct Node *p, int index, int x)
     }
 }
 
-void Diplay(struct Node *p)
+void Display(struct Node *p)
 {
     while(p != NULL)
     {
