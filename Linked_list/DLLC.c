@@ -29,6 +29,35 @@ void create(int A[], int n)
     }
 }
 
+int Delete(struct Node *p, int index)
+{
+    struct Node *q;
+    int x=-1,i;
+
+    if(index < 1 || index > Length(p))
+        return -1;
+
+    if (index == 1)
+    {
+        first = first->Next;
+        if (first) first->prev=NULL;
+
+        x = p->Data;
+        free(p);
+    }
+    else
+    {
+        for(i=0; i<index-1; i++)
+            p = p->Next;
+        p->prev->Next = p->Next;
+        if(p->Next)
+            p->Next->prev = p->prev;
+        x = p->Data;
+        free(p);
+    }
+    return x;
+}
+
 void Insert(struct Node *p, int index, int x)
 {
     struct Node *t;
@@ -84,9 +113,9 @@ int main()
 {
     int A[]={10,20,30,40,50};
     create(A,5);
-    Insert(first, 2, 25);
+    Delete(first,1);
     printf("\nLength is : %d\n", Length(first));
-    Diplay(first);
+    Display(first);
 
     return 0;
 }
