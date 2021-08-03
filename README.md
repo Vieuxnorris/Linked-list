@@ -29,9 +29,14 @@
 
 # Double-Linked-list
 
+- Create_circulaire(int A[], int n)
+- Length_circulaire(struct Node *p)
 - Create(int A[], int n)
 - Delete(struct Node *p, int index)
+- Delete_circulaire(struct Node *p, int index)
+- Insert_circulaire(struct Node *p, int index, int x)
 - Insert(struct Node *p, int index, int x)
 - Reverse(struct Node *p)
 - Display(struct Node *p)
+- Display_circulaire(struct Node *p)
 - Length(struct Node *p)
