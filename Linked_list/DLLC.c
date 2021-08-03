@@ -3,10 +3,44 @@
 
 struct Node
 {
-    struct Node *prev;
+    struct Node *Prev;
     int Data;
     struct Node *Next;
 }*first=NULL;
+
+void Create_circulaire(int A[], int n)
+{
+    struct Node *t, *last;
+    int i;
+
+    first = (struct Node *)malloc(sizeof(struct Node));
+    first->Data = A[0];
+    first->Prev = first;
+    first->Next = first;
+    last = first;
+
+    for(i=1;i<n;i++)
+    {
+        t = (struct Node *)malloc(sizeof(struct Node));
+        t->Data = A[i];
+        t->Next = first;
+        last->Next = t;
+        t->Prev = last;
+        last = t;
+    }
+}
+
+int Length_circulaire(struct Node *p)
+{
+    int len=0;
+    p = first;
+    do
+    {
+        len++;
+        p = p->Next;
+    } while (p != first);
+    return len;
+}
 
 void Create(int A[], int n)
 {
@@ -15,7 +49,7 @@ void Create(int A[], int n)
     
     first = (struct Node *)malloc(sizeof(struct Node));
     first->Data = A[0];
-    first->prev = first->Next = NULL;
+    first->Prev = first->Next = NULL;
     last=first;
 
     for(i=1; i<n; i++)
@@ -23,7 +57,7 @@ void Create(int A[], int n)
         t=(struct Node *)malloc(sizeof(struct Node));
         t->Data = A[i];
         t->Next = last->Next;
-        t->prev = last;
+        t->Prev = last;
         last->Next = t;
         last = t;
     }
@@ -40,7 +74,7 @@ int Delete(struct Node *p, int index)
     if (index == 1)
     {
         first = first->Next;
-        if (first) first->prev=NULL;
+        if (first) first->Prev=NULL;
 
         x = p->Data;
         free(p);
@@ -49,13 +83,88 @@ int Delete(struct Node *p, int index)
     {
         for(i=0; i<index-1; i++)
             p = p->Next;
-        p->prev->Next = p->Next;
+        p->Prev->Next = p->Next;
         if(p->Next)
-            p->Next->prev = p->prev;
+            p->Next->Prev = p->Prev;
         x = p->Data;
         free(p);
     }
     return x;
+}
+
+int Delete_circulaire(struct Node *p, int index)
+{
+    struct Node *t;
+    int i,x;
+
+    if (index < 0 || index > Length_circulaire(p))
+        return;
+    if (index == 1)
+    {
+        while(p->Next != first) p = p->Next;
+        x = first->Data;
+        if (p == first)
+        {
+            free(first);
+            first == NULL;
+        }
+        else
+        {
+            p->Next = first->Next;
+            first->Next->Prev = p;
+            free(first);
+            first = p->Next;
+        }
+    }
+    else
+    {
+        for(i=0;i<index-2;i++) p = p->Next;
+        t = p->Next;
+        p->Next = t->Next;
+        t->Next->Prev = p;
+        x = t->Data;
+        free(t);
+    }
+    return x;
+}
+
+void Insert_circulaire(struct Node *p, int index, int x)
+{
+    struct Node *t;
+    int i;
+
+    if(index < 0 || index > Length_circulaire(p))
+        return;
+    if (index == 0)
+    {
+        t = (struct Node *)malloc(sizeof(struct Node));
+        t->Data = x;
+        if (first == NULL)
+        {
+            first = t;
+            first->Prev = first;
+            first->Next = first;
+        }
+        else
+        {
+            while(p->Next != first) p = p->Next;
+            p->Next = t;
+            t->Prev = p;
+            t->Next = first;
+            first->Prev = t;
+            first = t;
+        }
+    }
+    else
+    {
+        for(i=0;i<index-1;i++) p = p->Next;
+        t = (struct Node *)malloc(sizeof(struct Node));
+        t->Data = x;
+        t->Prev = p;
+        t->Next = p->Next;
+        p->Next->Prev = t;
+        p->Next = t;
+    }
 }
 
 void Insert(struct Node *p, int index, int x)
@@ -69,9 +178,9 @@ void Insert(struct Node *p, int index, int x)
     {
         t = (struct Node *)malloc(sizeof(struct Node));
         t->Data = x;
-        t->prev = NULL;
+        t->Prev = NULL;
         t->Next = first;
-        first->prev = t;
+        first->Prev = t;
         first = t;
     }
     else
@@ -80,10 +189,10 @@ void Insert(struct Node *p, int index, int x)
             p = p->Next;
         t = (struct Node *)malloc(sizeof(struct Node));
         t->Data = x;
-        t->prev = p;
+        t->Prev = p;
         t->Next = p->Next;
 
-        if(p->Next) p->Next->prev = t;
+        if(p->Next) p->Next->Prev = t;
         p->Next = t;
     }
 }
@@ -95,9 +204,9 @@ void Reverse(struct Node *p)
     while(p != NULL)
     {
         temp = p->Next;
-        p->Next = p->prev;
-        p->prev = temp;
-        p = p->prev;
+        p->Next = p->Prev;
+        p->Prev = temp;
+        p = p->Prev;
         if(p != NULL && p->Next == NULL)
             first = p;
     }
@@ -111,6 +220,18 @@ void Display(struct Node *p)
         p = p->Next;
     }
     printf("\n");
+}
+
+void Display_circulaire(struct Node *p)
+{
+    struct Node *q;
+    q = first;
+    do
+    {
+        printf("%d ", q->Data);
+        q = q->Next;
+    } while (q != first);
+    
 }
 
 int Length(struct Node *p)
@@ -127,10 +248,10 @@ int Length(struct Node *p)
 int main()
 {
     int A[]={10,20,30,40,50};
-    Create(A,5);
-    Reverse(first);
-    printf("\nLength is : %d\n", Length(first));
-    Display(first);
+    Create_circulaire(A,5);
+    Insert_circulaire(first,3,15);
+    printf("voici le nombre supprimé : %d \n", Delete_circulaire(first, 3));
+    Display_circulair(first);
 
     return 0;
 }
